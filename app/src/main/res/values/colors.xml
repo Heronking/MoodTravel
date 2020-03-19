@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorBlack">#000</color>
+    <color name="colorLightBlack">#3d3d3d</color>
+    <color name="colorTranBlack">#78343434</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorSnowWhite">#FFFAFA</color>
+    <color name="colorFloralWhite">#FFFAF0</color>
+    <color name="colorMintCreamWhite">#F5FFFA</color>
+    <color name="colorGhostWhite">#F8F8FF</color>
+    <color name="colorSilveryWhite">#e9e7ef</color>
+    <color name="colorIvoryWhite">#fffbf0</color>
+    <color name="colorSmokeWhite">#F5F5F5</color>
+    <color name="colorGray">#80B080</color>
+    <color name="colorSlateGray">#708090</color>
+    <color name="colorShallot">#0aa344</color>
+    <color name="colorOrange">#fa8c35</color>
+    <color name="colorGolden">#eacd76</color>
+    <color name="colorLightYellow">#FFFFE0</color>
+    <color name="colorBlue">#7C4DFF</color>
+    <color name="colorSmallBlue">#537edc</color>
+    <color name="colorSkyBlue">#87CECB</color>
+    <color name="colorLightBlue">#E0FFFF</color>
+    <color name="colorAzureBlue">#F0FFFF</color>
+    <color name="colorLightGreen">#90EE90</color>
+    <color name="colorGreen">#008000</color>
+    <color name="colorSpringGreen">#00FF7F</color>
+    <color name="colorHoneydewGreen">#F0FFF0</color>
+    <color name="colorRed">#ff4c00</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorTranslucent">#20000000</color>
+    <color name="transWhite">#80ffffff</color>
+    <color name="colorLine">#e0e0e0</color>
+
+    <color name="colorJam">#990033</color>
+
+    <color name="colorWalk">#6db74d</color>
+    <color name="colorBusAndDrive">#537edc</color>
+
+
+
+</resources>

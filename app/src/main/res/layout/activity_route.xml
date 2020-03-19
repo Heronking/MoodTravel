@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="true"
+            android:layout_marginTop="10dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/rt_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_tool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_marginStart="50dp">
+
+                <LinearLayout
+                    android:id="@+id/layout_from_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_bg_edit"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:layout_toStartOf="@id/btn_swap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="从"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_from"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:textColor="@color/colorSnowWhite" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_to_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_bg_edit"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:layout_below="@+id/layout_from_place"
+                    android:layout_toStartOf="@+id/btn_swap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="到"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_to"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorSnowWhite" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btn_swap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/swap"
+                    android:layout_margin="13dp" />
+
+            </RelativeLayout>
+
+
+        </FrameLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabTextColor="@color/colorSmokeWhite"
+            app:tabIndicatorColor="@color/colorWhite"
+            android:layout_gravity="center_horizontal"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/route_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bus_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="115dp"
+        android:visibility="invisible"
+        android:background="@color/colorWhite"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bs_route"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingTop="8dp"
+        android:fillViewport="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="80dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <include
+            layout="@layout/layout_route_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

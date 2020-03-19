@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="18.5dp">
+
+        <ImageView
+            android:id="@+id/bus_station"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/dir_station" />
+
+        <View
+            android:id="@+id/station_connect_top"
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bus_station"
+            android:layout_centerHorizontal="true"
+            android:background="#b7b7b7" />
+
+        <View
+            android:id="@+id/station_connect_bottom"
+            android:layout_width="3dp"
+            android:layout_below="@+id/bus_station"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:background="#b7b7b7" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/station_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:gravity="center_vertical"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+</LinearLayout>

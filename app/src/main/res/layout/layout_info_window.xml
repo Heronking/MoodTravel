@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="210dp"
+    android:layout_height="130dp"
+    android:background="@color/colorTransparent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="9.5"
+        android:background="@drawable/inforwindow_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:paddingTop="3dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp"
+            tools:ignore="NestedWeights" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/colorLine" />
+
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:maxLines="10"
+            android:maxEms="13"
+            android:paddingStart="3dp"
+            android:gravity="center_vertical"
+            android:singleLine="false"
+            android:textColor="@color/colorLightBlack"
+            android:textSize="13sp" />
+        <!--            <View-->
+        <!--                android:layout_width="2dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginTop="5dp"-->
+        <!--                android:layout_marginBottom="5dp"-->
+        <!--                android:background="@color/colorSilveryWhite"/>-->
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/ll_route"-->
+        <!--                android:layout_width="47dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:gravity="center"-->
+        <!--                android:layout_marginStart="5dp">-->
+        <!--                <ImageView-->
+        <!--                    android:layout_width="20dp"-->
+        <!--                    android:layout_height="20dp"-->
+        <!--                    android:background="@drawable/route"-->
+        <!--                    android:scaleType="centerCrop"-->
+        <!--                    tools:ignore="ContentDescription" />-->
+
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:textSize="13sp"-->
+        <!--                    android:text="路线"-->
+        <!--                    android:textColor="@color/colorLightBlack"/>-->
+
+        <!--            </LinearLayout>-->
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorTransparent"/>
+
+</LinearLayout>

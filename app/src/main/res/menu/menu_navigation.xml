@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/satellite"
+            android:title="卫星地图"
+            android:icon="@drawable/icon_satellite"/>
+        <item android:id="@+id/night"
+            android:title="夜间模式"
+            android:icon="@drawable/icon_night"/>
+        <item android:id="@+id/common"
+            android:title="普通地图"
+            android:icon="@drawable/icon_map"/>
+    </group>
+</menu>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_border">
+
+    <ImageView
+        android:id="@+id/path_divide_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/colorLine" />
+
+    <ImageView
+        android:id="@+id/path_dir_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dir_start"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="30dp"
+        />
+
+    <TextView
+        android:id="@+id/path_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/path_dir_icon"
+        android:layout_marginStart="20dp"
+        android:textSize="18sp"
+        android:text="这里是路线"/>
+
+</RelativeLayout>

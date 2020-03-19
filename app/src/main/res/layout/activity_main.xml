@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dr"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                app:cardCornerRadius="5dp">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/top_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_shape_bg_white_gray"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableStart="@drawable/search"
+                        android:drawablePadding="10dp"
+                        android:text="查找地点、城市"
+                        android:textSize="18sp" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="horizontal"
+            tools:ignore="RtlHardcoded">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fb_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bg_btn"
+                android:clickable="true"
+                android:elevation="6dp"
+                android:focusable="true"
+                android:src="@drawable/icon_weather"
+                app:backgroundTint="@color/colorWhite"
+                app:fabSize="mini"
+                app:pressedTranslationZ="10dp"
+                app:rippleColor="@color/colorSilveryWhite" />
+
+            <TextView
+                android:id="@+id/temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@color/colorTransparent"
+                android:text="20℃"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/ns_bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            <!--        behavior_hideable   是否能通过下滑手势收起bottomSheet
+                        behavior_peekHeight 可见部分高度  -->
+            <LinearLayout
+                android:id="@+id/bs_ll"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_border"
+                android:orientation="vertical"
+                android:paddingStart="15dp"
+                android:paddingTop="13dp"
+                android:paddingBottom="20dp"
+                tools:ignore="RtlSymmetry">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="80dp"
+                    android:layout_weight="4"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_dis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="80dp"
+                    android:layout_weight="3"
+                    android:ellipsize="end"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="120dp"
+            android:background="@drawable/shape_bg_btn"
+            android:clickable="true"
+            android:elevation="6dp"
+            android:focusable="true"
+            android:src="@drawable/btn_location"
+            app:backgroundTint="@color/colorWhite"
+            app:fabSize="mini"
+            app:pressedTranslationZ="10dp"
+            app:rippleColor="@color/colorSilveryWhite" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_bg_btn"
+            android:backgroundTint="@color/colorBlue"
+            android:clickable="true"
+            android:elevation="6dp"
+            android:focusable="true"
+            android:src="@drawable/icon_fb_navi"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            app:layout_anchor="@id/ns_bottom_sheet"
+            app:layout_anchorGravity="right|top"
+            app:pressedTranslationZ="10dp"
+            app:rippleColor="@color/colorLightBlue" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
