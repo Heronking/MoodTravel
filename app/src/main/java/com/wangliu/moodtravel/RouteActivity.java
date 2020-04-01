@@ -703,8 +703,7 @@ public class RouteActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == Constants.REQUEST_ROUTE_ACTIVITY)
-                && (resultCode == RESULT_OK)) {
+        if ((requestCode == Constants.REQUEST_ROUTE_ACTIVITY) && (resultCode == RESULT_OK)) {
             assert data != null;
             if (data.getIntExtra("resultType", 1)
                     == Constants.POITIP_RESULT) {   //数据类型是tip

@@ -17,7 +17,6 @@
             android:src="@drawable/dir_station" />
 
         <View
-            android:id="@+id/station_connect_top"
             android:layout_width="3dp"
             android:layout_height="match_parent"
             android:layout_above="@+id/bus_station"
@@ -25,7 +24,6 @@
             android:background="#b7b7b7" />
 
         <View
-            android:id="@+id/station_connect_bottom"
             android:layout_width="3dp"
             android:layout_below="@+id/bus_station"
             android:layout_height="match_parent"

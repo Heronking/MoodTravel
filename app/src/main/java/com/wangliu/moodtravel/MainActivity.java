@@ -5,9 +5,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +54,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.wangliu.moodtravel.adapter.InfoAdapter;
+import com.wangliu.moodtravel.users.LoginActivity;
+import com.wangliu.moodtravel.users.User;
+import com.wangliu.moodtravel.users.UserCenterActivity;
 import com.wangliu.moodtravel.utils.AMapUtils;
+import com.wangliu.moodtravel.utils.AvatarUtils;
 import com.wangliu.moodtravel.utils.Constants;
 import com.wangliu.moodtravel.utils.ToastUtils;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.wangliu.moodtravel.utils.WeatherUtils.weatherImage;
 
@@ -86,6 +96,12 @@ public class MainActivity extends HasPermissionsActivity implements
     private TextView mTvTemperature;    //温度
 
     private NavigationView mNavigationView; //侧滑栏
+    private RelativeLayout mReLogin;
+
+    private User user;
+    private CircleImageView mAvatar;
+    private TextView mNickname;
+    private TextView mMessage;
 
 
     private boolean isFirst = true;  //是否是第一次定位标志，定位成功后不再持续弹出数据或移动地图
@@ -106,6 +122,31 @@ public class MainActivity extends HasPermissionsActivity implements
 
         initLocation();
 
+        updateHeadUI();
+
+    }
+
+    /**
+     * 更新用户UI
+     */
+    private void updateHeadUI() {
+        if (user == null) {
+            mMessage.setText("点击登录 ~ ");
+            mNickname.setText("害没登录呢？");
+            mAvatar.setImageResource(R.drawable.icon_unlogin);
+        } else {
+            mMessage.setText("个人中心");
+            if (user.getNickName() == null) {
+                mNickname.setText("昵称未设置");
+            } else {
+                mNickname.setText(user.getNickName());
+            }
+            if (user.getAvatar() != null) {
+                mAvatar.setImageResource(AvatarUtils.avatars.get(user.getAvatar()));
+            } else {
+                mAvatar.setImageResource(R.drawable.icon_unlogin);
+            }
+        }
     }
 
     /**
@@ -167,16 +208,20 @@ public class MainActivity extends HasPermissionsActivity implements
         BottomSheetBehavior behavior = BottomSheetBehavior.from(mNsBottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
+        //把header和menu加进来
         mNavigationView = findViewById(R.id.navigation_view);
         mNavigationView.inflateHeaderView(R.layout.layout_nv_header);
         mNavigationView.inflateMenu(R.menu.menu_navigation);
 
+        //获取顶部布局
+        View view = mNavigationView.getHeaderView(0);
+        mAvatar = view.findViewById(R.id.image_head);
+        mNickname = view.findViewById(R.id.nickname);
+        mReLogin = view.findViewById(R.id.rl_login);
+        mMessage = view.findViewById(R.id.message);
 
         registerLayoutListener();
 
-        new Thread(() -> {  //这里有异步回调，放到线程里面
-            searchWeather(mCity);    //实时天气
-        }).start();
     }
 
     /**
@@ -186,10 +231,18 @@ public class MainActivity extends HasPermissionsActivity implements
         if (mAMap == null) {
             mAMap = mMapView.getMap();  //地图对象
         }
-        registerMapListener();
+        //初始化key，和用户
+        Bmob.initialize(this, this.getString(R.string.Bmob_appkey));
+        user = BmobUser.getCurrentUser(User.class);
+
         mAMap.setTrafficEnabled(true);  //显示交通
+        registerMapListener();
         initMyLocation();   //当前位置蓝点样式
         initUi();   //地图界面ui
+
+        new Thread(() -> {  //这里有异步回调，放到线程里面
+            searchWeather(mCity);    //实时天气
+        }).start();
     }
 
     /**
@@ -199,6 +252,7 @@ public class MainActivity extends HasPermissionsActivity implements
         mFBLocation.setOnClickListener(this);
         mTbSearch.setOnClickListener(this);
         mFBWeather.setOnClickListener(this);
+        mReLogin.setOnClickListener(this);
         mFBNavigation.setOnClickListener(this::onClick);
 
         mNavigationView.setNavigationItemSelectedListener(item -> {
@@ -434,6 +488,13 @@ public class MainActivity extends HasPermissionsActivity implements
                     RouteActivity.startActivity(this, mLatLng
                             , null, mCity, mAddress, null);
                 }
+                break;
+            case R.id.rl_login:
+                if (user == null) {
+                    LoginActivity.startActivity(this, Constants.REQUEST_MAIN_ACTIVITY);
+                } else {
+                    UserCenterActivity.startActivity(this, Constants.REQUEST_MAIN_ACTIVITY);
+                }
         }
     }
 
@@ -465,8 +526,7 @@ public class MainActivity extends HasPermissionsActivity implements
     private void getAddressByLatLng(LatLng latLng) {
         final GeocodeSearch geocodeSearch = new GeocodeSearch(this);
         final RegeocodeQuery query = new RegeocodeQuery(
-                AMapUtils.convertToLatLonPoint(latLng),
-                500f,
+                AMapUtils.convertToLatLonPoint(latLng), 500f,
                 GeocodeSearch.AMAP
         );  //逆地址编码坐标点、查询范围、坐标类型
         geocodeSearch.setOnGeocodeSearchListener(this);
@@ -493,7 +553,7 @@ public class MainActivity extends HasPermissionsActivity implements
                     e.printStackTrace();
                 }
                 if (address == null) {    //没有具体位置
-                    marker.setSnippet("没找到，自己看着办吧，怪我也没用");
+                    marker.setSnippet("没找到，自己看着办吧");
                 } else {
                     marker.setSnippet(address);
                 }
@@ -520,27 +580,41 @@ public class MainActivity extends HasPermissionsActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.REQUEST_MAIN_ACTIVITY) {   //判断是否为此Activity的数据
-            if (resultCode == RESULT_OK) {  //是个好数据
-                assert data != null;
-                if (Constants.POIITEM_RESULT == data.getIntExtra("resultType", 1)) {    //找一下关于poiItem的数据
-                    PoiItem poiItem = data.getParcelableExtra("result");
-                    if (poiItem != null) {
-                        mCity = poiItem.getCityName();
-                    }
+        if (requestCode == Constants.REQUEST_MAIN_ACTIVITY && resultCode == RESULT_OK) {   //判断是否为此Activity的数据
+
+            if (data == null) {
+                Log.e("null null", requestCode + " " + resultCode);
+                return;
+            }
+            if (Constants.POIITEM_RESULT == data.getIntExtra("resultType", 1)) {    //找一下关于poiItem的数据
+                PoiItem poiItem = data.getParcelableExtra("result");
+                if (poiItem != null) {
+                    mCity = poiItem.getCityName();
                     addMarker(AMapUtils.convertToLatLng(poiItem.getLatLonPoint())
                             , poiItem.getTitle(), poiItem.getSnippet());
                     isDataBack = true;
-                } else {
-                    Tip tip = data.getParcelableExtra("result");
-                    if (tip != null) {
-                        idSearch(tip.getPoiID());
-                    }
+                }
+            }
+            if (Constants.POITIP_RESULT == data.getIntExtra("resultType", 1)) {    //找一下关于poiItem的数据{
+                Tip tip = data.getParcelableExtra("result");
+                if (tip != null) {
+                    idSearch(tip.getPoiID());
                     addMarker(AMapUtils.convertToLatLng(tip.getPoint())
                             , tip.getName(), tip.getAddress());
                     isDataBack = true;
                 }
             }
+            if (Constants.LOGIN_RESULT == data.getIntExtra("resultType", 1)) {
+                user = BmobUser.getCurrentUser(User.class);
+//                    Log.e("Login", "登录成功了");
+                updateHeadUI();
+            }
+            if (Constants.LOGIN_OUT_RESULT == data.getIntExtra("resultType", 1)) {
+                user = BmobUser.getCurrentUser(User.class);
+//                    Log.e("Login_out", "退出登录了");
+                updateHeadUI();
+            }
+
         }
     }
 

@@ -1,10 +1,17 @@
 package com.wangliu.moodtravel;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +32,13 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.wangliu.moodtravel.adapter.PoiItemAdapter;
 import com.wangliu.moodtravel.adapter.PoiTipsAdapter;
+import com.wangliu.moodtravel.sqlite.SearchHistorySQLiteHelper;
 import com.wangliu.moodtravel.utils.ToastUtils;
 import com.wangliu.moodtravel.widget.LoadingDialog;
 
 import java.util.List;
+
+import static com.wangliu.moodtravel.R.layout.item_search_history;
 
 public class PoiSearchActivity extends AppCompatActivity implements
         PoiSearch.OnPoiSearchListener, Inputtips.InputtipsListener,
@@ -38,9 +48,10 @@ public class PoiSearchActivity extends AppCompatActivity implements
 
     private SearchView mSvSearch;
     private RecyclerView mRvSearchTips;
-    private TextView mTvTips;
-
-
+    private LinearLayout mLLHistory;
+    private ListView mLvRecord;
+    private TextView mTvClean;
+    private SearchHistorySQLiteHelper helper;
 
     private PoiTipsAdapter searchTipsAdapter;
     private List<Tip> tipList;  //poi提示信息集合
@@ -51,7 +62,7 @@ public class PoiSearchActivity extends AppCompatActivity implements
      * 传递数据
      * 返回时将回调onActivityResult
      * @param appCompatActivity
-     * @param requestCode
+     * @param requestCode   调用的请求码
      * @param mCity 把城市信息传过来
      */
     public static void startActivity(AppCompatActivity appCompatActivity, int requestCode, String mCity) {
@@ -66,9 +77,15 @@ public class PoiSearchActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_poi_search);
 
         mCity = getIntent().getStringExtra("mCity");
+        //初始化数据库
+        helper = new SearchHistorySQLiteHelper(this, "history", null, 1);
+//        Cursor cursor = helper.getReadableDatabase().rawQuery("select * from history", null);
+//        while (cursor.moveToNext()) {
+//            Log.e("data", cursor.getString(cursor.getColumnIndex("hno"))+" "+cursor.getString(cursor.getColumnIndex("record")));
+//        }
 
         initView();
-        mRvSearchTips.setLayoutManager(new LinearLayoutManager(this));  //设置布局
+
     }
 
     /**
@@ -79,28 +96,48 @@ public class PoiSearchActivity extends AppCompatActivity implements
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         mRvSearchTips = findViewById(R.id.rv_search);
-
+        mRvSearchTips.setLayoutManager(new LinearLayoutManager(this));  //设置布局
+        mLvRecord = findViewById(R.id.record);
+        mTvClean = findViewById(R.id.clean_username);
+        mLLHistory = findViewById(R.id.ll_history);
         mSvSearch = findViewById(R.id.search_view);
-        mSvSearch.setOnQueryTextListener(this); //搜索栏文本事件监听
-        mSvSearch.setSubmitButtonEnabled(true); //提交按钮，点击开始搜索
-        mSvSearch.onActionViewExpanded();   //进入搜索页面默认展开view，打开软键盘
-
-//        int id = mSvSearch.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-//        EditText editText = mSvSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-//        editText.setTextColor(R.color.colorWhite);
-//        editText.setHintTextColor(R.color.colorWhite);
-
-
-        mTvTips = findViewById(R.id.tv_start_search);
-
         Toolbar mToolbar = findViewById(R.id.poi_toolbar);
         setSupportActionBar(mToolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
+        if (helper.hasData(helper.getReadableDatabase())) {
+            showRecord();
+        }
+        registerListener();
+    }
+
+    private void registerListener() {
+        mSvSearch.setOnQueryTextListener(this); //搜索栏文本事件监听
+        mSvSearch.setSubmitButtonEnabled(true); //提交按钮，点击开始搜索
+        mSvSearch.onActionViewExpanded();   //进入搜索页面默认展开view，打开软键盘
+        mSvSearch.setOnCloseListener(() -> {
+            if (helper.hasData(helper.getReadableDatabase())) {
+                showRecord();
+            }
+            return false;
+        });
+
+        mTvClean.setOnClickListener(v -> {
+            new Thread(() -> {
+                helper.delete(helper.getWritableDatabase());
+                mLLHistory.setVisibility(View.GONE);
+            }).start();
+        });
+
+        mLvRecord.setOnItemClickListener((parent, view, position, id) -> {
+            TextView textView = view.findViewById(R.id.text);
+            mSvSearch.setQuery(textView.getText(), false);
+        });
     }
 
     @Override
@@ -120,8 +157,9 @@ public class PoiSearchActivity extends AppCompatActivity implements
     /**
      * 放一个加载条
      */
-    private void showLoadingDialog() {
+    private void showLoadingDialog() throws InterruptedException {
         if (loadingDialog == null) {
+            Thread.sleep(500);
             LoadingDialog.Builder builder = new LoadingDialog.Builder(this);
             builder.setMessage("搜索中...").setCanelable(true).setCanelableOutside(true);
             loadingDialog = builder.create();
@@ -159,17 +197,9 @@ public class PoiSearchActivity extends AppCompatActivity implements
 //                for (PoiItem p: poiItemList) {
 //                    Log.e("数据：", p.getTitle()+" "+p.getSnippet()+"\n");
 //                }
-                PoiItemAdapter poiItemAdapter = new PoiItemAdapter(poiItemList, this);
+                PoiItemAdapter poiItemAdapter = new PoiItemAdapter(poiItemList, this, helper);
                 mRvSearchTips.setAdapter(poiItemAdapter);
                 poiItemAdapter.notifyDataSetChanged();  //刷新数据
-
-                if (poiItemList.size() != 0) {  //搜索到了城市
-                    mTvTips.setVisibility(View.GONE);   //去掉搜索提示
-                } else {
-                    mTvTips.setVisibility(View.VISIBLE);    //否则显示搜索提示
-                }
-            } else {    //搜索失败
-                mTvTips.setVisibility(View.VISIBLE);    //显示搜索提示
             }
         } else {
             ToastUtils.showMsg(this, "搜索失败了，自己找原因\n错误码：" + i, Toast.LENGTH_SHORT);
@@ -188,7 +218,12 @@ public class PoiSearchActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onQueryTextSubmit(String word) {
-        showLoadingDialog();    //显示加载框休息一下
+        try {
+            showLoadingDialog();    //显示加载框休息一下
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         PoiSearch.Query query = new PoiSearch.Query(word, "", mCity);//si: 搜索类型  mCity：搜索的城市区域
         query.setPageSize(50);  //设置每页最多返回多少条poiItem
         query.setPageNum(0);    //设置查询页码
@@ -201,6 +236,20 @@ public class PoiSearchActivity extends AppCompatActivity implements
 
         return false;
     }
+
+
+    private void showRecord() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select hno as _id, record from history order by hno desc", null);
+        ListAdapter adapter = new SimpleCursorAdapter(this, item_search_history, cursor
+                , new String[]{"record"}, new int[]{R.id.text}
+                , CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        mLvRecord.setAdapter(adapter);
+        db.close();
+
+        mLLHistory.setVisibility(View.VISIBLE);
+    }
+
 
     /**
      * 文本框内文本改变时实时回调此方法更新搜索信息
@@ -215,6 +264,7 @@ public class PoiSearchActivity extends AppCompatActivity implements
 
             inputtips.setInputtipsListener(this);   //根据输入内容回调监听获得搜索结果
             inputtips.requestInputtipsAsyn();
+
         } else {
             if (searchTipsAdapter != null && tipList != null) {
                 tipList.clear();
@@ -233,15 +283,10 @@ public class PoiSearchActivity extends AppCompatActivity implements
     public void onGetInputtips(List<Tip> list, int i) {
         if (i == AMapException.CODE_AMAP_SUCCESS) {
             tipList = list;
-            searchTipsAdapter = new PoiTipsAdapter(tipList, this);
+            searchTipsAdapter = new PoiTipsAdapter(tipList, this, helper);
             searchTipsAdapter.notifyDataSetChanged();
             mRvSearchTips.setAdapter(searchTipsAdapter);
 
-            if (tipList.size() != 0) {  //有提示条目，就让搜索提示滚
-                mTvTips.setVisibility(View.GONE);
-            } else {
-                mTvTips.setVisibility(View.VISIBLE);
-            }
         } else {
             ToastUtils.showMsg(this, "i的值：" + i, Toast.LENGTH_SHORT);
         }

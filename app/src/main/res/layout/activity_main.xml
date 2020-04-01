@@ -98,7 +98,6 @@
             <!--        behavior_hideable   是否能通过下滑手势收起bottomSheet
                         behavior_peekHeight 可见部分高度  -->
             <LinearLayout
-                android:id="@+id/bs_ll"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:background="@drawable/bg_border"

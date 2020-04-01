@@ -1,6 +1,7 @@
 package com.wangliu.moodtravel.adapter;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amap.api.services.core.PoiItem;
 import com.wangliu.moodtravel.PoiSearchActivity;
 import com.wangliu.moodtravel.R;
+import com.wangliu.moodtravel.sqlite.SearchHistorySQLiteHelper;
 import com.wangliu.moodtravel.utils.Constants;
 
 import java.util.List;
@@ -21,10 +23,12 @@ public class PoiItemAdapter extends RecyclerView.Adapter<PoiItemAdapter.ViewHold
 
     private List<PoiItem> poiItemList;  //poi事件集合
     private PoiSearchActivity activity;
+    private SearchHistorySQLiteHelper helper;
 
-    public PoiItemAdapter(List<PoiItem> poiItemList, PoiSearchActivity activity) {
+    public PoiItemAdapter(List<PoiItem> poiItemList, PoiSearchActivity activity, SearchHistorySQLiteHelper helper) {
         this.poiItemList = poiItemList;
         this.activity = activity;
+        this.helper = helper;
     }
 
     /**
@@ -44,6 +48,14 @@ public class PoiItemAdapter extends RecyclerView.Adapter<PoiItemAdapter.ViewHold
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 PoiItem poi = poiItemList.get(position);
+
+                SQLiteDatabase db = helper.getWritableDatabase();
+                if (helper.hasNoRecord(db, poi.getCityName())) {
+                    helper.insertData(db, poi.getCityName());
+                } else {
+                    db.close();
+                }
+
                 Intent intent = new Intent();   //把点击的数据放到intent里面
                 intent.putExtra("resultType", Constants.POIITEM_RESULT)
                         .putExtra("result", poi);

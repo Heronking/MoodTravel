@@ -116,6 +116,7 @@ public class BusRouteActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         mRvBusDetails.setLayoutManager(manager);
+
         mRvBusDetails.setAdapter(new BusRouteAdapter(this
                 , mResult.getPaths().get(pos).getSteps()));
     }

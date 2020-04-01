@@ -12,3 +12,18 @@
 /captures
 .externalNativeBuild
 .cxx
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+strings.xml
+app/src/main/res/values/strings.xml
+app/src/main/res/values/strings.xml
+app/src/main/res/values/strings.xml
+app/src/main/res/values/strings.xml

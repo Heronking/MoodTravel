@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_register"
+    tools:context=".users.BindEmailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="18dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/icon_back_2"
+            android:layout_marginStart="10dp"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/colorWhite"
+            android:layout_centerVertical="true"
+            android:text="绑定邮箱"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:text="绑定邮箱可以改密码！"
+        android:textColor="@color/colorWhite"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:errorTextAppearance="@style/error_text"
+        android:background="@drawable/layer_list_underline"
+        >
+        <EditText
+            android:id="@+id/email"
+            android:hint="@string/hint_email"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorSmokeWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            style="@style/StyleOfEditText"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_ok"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/selector_btn_login"
+        android:text="确  定"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
+
+</LinearLayout>

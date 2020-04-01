@@ -208,7 +208,7 @@ public class BusRouteAdapter extends RecyclerView.Adapter<BusRouteAdapter.ViewHo
             if (item.isRailway()) {
                 if (!holder.isExpand) {
                     holder.isExpand = true;
-                    holder.expandImage.setImageResource(R.drawable.expand_up);
+                    holder.expandImage.setImageResource(R.drawable.icon_expand_up);
                     showRailwayStation(item.getRailway().getDeparturestop());   //起始站
                     for (RailwayStationItem stationItem: item.getRailway().getViastops()) { //途经站点
                         showRailwayStation(stationItem);
@@ -217,7 +217,7 @@ public class BusRouteAdapter extends RecyclerView.Adapter<BusRouteAdapter.ViewHo
 //                    Log.e("time:", item.getRailway().getViastops().get(0).getTime() + " 111111");
                 } else {
                     holder.isExpand = false;
-                    holder.expandImage.setImageResource(R.drawable.expand);
+                    holder.expandImage.setImageResource(R.drawable.icon_expand_down);
                     holder.expandDetails.removeAllViews();
                     Log.e("time:", item.getRailway().getViastops().get(0).getTime() + " 111111");
                 }
@@ -225,7 +225,7 @@ public class BusRouteAdapter extends RecyclerView.Adapter<BusRouteAdapter.ViewHo
                 if (!holder.isExpand) {
                     holder.isExpand = true;
 //                    Log.e("stationNum: ", holder.stationNum.getText().toString());
-                    holder.expandImage.setImageResource(R.drawable.expand_up);
+                    holder.expandImage.setImageResource(R.drawable.icon_expand_up);
                     showBusStation(item.getBusLines().get(0).getDepartureBusStation());   //起始站
                     for (BusStationItem stationItem: item.getBusLines().get(0).getPassStations()) { //途经站点
                         showBusStation(stationItem);
@@ -233,7 +233,7 @@ public class BusRouteAdapter extends RecyclerView.Adapter<BusRouteAdapter.ViewHo
                     showBusStation(item.getBusLines().get(0).getArrivalBusStation()); //终点站
                 } else {
                     holder.isExpand = false;
-                    holder.expandImage.setImageResource(R.drawable.expand);
+                    holder.expandImage.setImageResource(R.drawable.icon_expand_down);
                     holder.expandDetails.removeAllViews();
                 }
             }

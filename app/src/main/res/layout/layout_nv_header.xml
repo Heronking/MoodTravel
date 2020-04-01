@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:padding="10dp"
+    android:id="@+id/rl_login"
     android:background="@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -15,7 +16,7 @@
         android:scaleType="centerCrop"/>
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -23,10 +24,10 @@
         android:textColor="@color/colorWhite"/>
 
     <TextView
-        android:id="@+id/login"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/name"
+        android:layout_above="@+id/nickname"
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         android:text="点击头像登录"

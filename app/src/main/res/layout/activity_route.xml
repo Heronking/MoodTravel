@@ -28,7 +28,6 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
             <RelativeLayout
-                android:id="@+id/rl_tool"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
@@ -65,7 +64,6 @@
 
 
                 <LinearLayout
-                    android:id="@+id/layout_to_place"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"

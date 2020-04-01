@@ -19,7 +19,28 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+
+    <style name="Theme.EditText.Underline" parent="Theme.AppCompat.Light">
+<!--        没有焦点的下划线颜色-->
+        <item name="colorControlNormal">@color/colorTransparent</item>
+<!--        有焦点的-->
+        <item name="colorControlActivated">@color/colorTransparent</item>
+    </style>
+
+    <style name="StyleOfEditText">
+<!--        下划线颜色-->
+        <item name="theme">@style/Theme.EditText.Underline</item>
+        <item name="android:textColorHint">@color/alpha70White</item>
+        <!--光标-->
+        <item name="android:textCursorDrawable">@drawable/shape_text_cursor</item>
+<!--        输入时框内的颜色-->
+        <item name="android:textColorHighlight">#8090df24</item>
 
     </style>
 
+    <style name="error_text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/colorJam</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>
